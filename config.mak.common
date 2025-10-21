@@ -1,0 +1,5 @@
+# CC and CXX are set deterministically by 'build.sh' itself.
+# TARGET is set by 'build.sh' since it is architecture-dependent.
+# Package versions can be set using the 'mcm-latest-hashes.sh' script.
+COMMON_CONFIG += CFLAGS="-g0 -Os" CXXFLAGS="-g0 -Os" LDFLAGS="-s"
+DL_CMD = curl -C - -L -o
