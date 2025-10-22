@@ -55,6 +55,9 @@ jobs:
       - buildarm
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
       - name: Download x86_64 artifact
         uses: actions/download-artifact@v4
         with:
