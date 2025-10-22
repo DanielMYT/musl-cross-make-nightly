@@ -80,3 +80,11 @@ jobs:
             exit 0
           fi
           gh release create "$tag" --title "$tag" {x86_64,aarch64}-linux-musl-toolchain.tar.xz
+
+      - name: Clean up artifact cache after release
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: |
+            x86_64-linux-musl-toolchain.tar.xz
+            aarch64-linux-musl-toolchain.tar.xz
+          failOnError: false
