@@ -8,9 +8,16 @@ if test -e work; then
   exit 1
 fi
 
-# Set up for build.
+# Check out source and apply any patches.
 mkdir -p work
 git clone https://github.com/richfelker/musl-cross-make work/src
+if test -d src-apply; then
+  while read -r patch; do
+    ./try-apply.sh "$patch" work/src
+  done < <(find src-apply -mindepth 1 -maxdepth 1 -type f -name \*.patch)
+fi
+
+# Set up build config.
 cp config.mak.common work/src/config.mak.TEMPLATE
 echo "TARGET = $(uname -m)-linux-musl" >> work/src/config.mak.TEMPLATE
 ./mcm-latest-hashes.sh work/src >> work/src/config.mak.TEMPLATE
