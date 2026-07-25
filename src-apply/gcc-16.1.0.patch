@@ -1,49 +1,46 @@
-Patch Source: <https://github.com/richfelker/musl-cross-make/pull/216>
-=======================================================================
-
-From fc7bbcd004bdd3e001f2886eae786ccd7723f658 Mon Sep 17 00:00:00 2001
+From 33aa77d69d36b72e1b4e3f5fa76e53e86037637f Mon Sep 17 00:00:00 2001
 From: userdocs <16525024+userdocs@users.noreply.github.com>
-Date: Sat, 9 Aug 2025 01:04:38 +0100
-Subject: [PATCH] add support gcc 15.2.0
+Date: Fri, 1 May 2026 04:52:26 +0100
+Subject: [PATCH] add gcc-16.1.0 support
 
-brought forward patches and tested them to confirm they apply successfully.
+This adds support for gcc-16.1.0 and brings forward patches that have been tested to successfully build with this release.
 
-added has file.
+Add the hash for this release version.
 ---
- hashes/gcc-15.2.0.tar.xz.sha1                 |   1 +
- patches/gcc-15.2.0/0001-ssp_nonshared.diff    |  14 +
- patches/gcc-15.2.0/0002-posix_memalign.diff   |  30 ++
- patches/gcc-15.2.0/0003-j2.diff               | 346 ++++++++++++++++++
- patches/gcc-15.2.0/0004-static-pie.diff       |  92 +++++
- patches/gcc-15.2.0/0005-m68k-sqrt.diff        |  20 +
- patches/gcc-15.2.0/0006-cow-libstdc++v3.diff  |   8 +
- patches/gcc-15.2.0/0007-fdpic-unwind.diff     |  11 +
+ hashes/gcc-16.1.0.tar.xz.sha1                 |   1 +
+ patches/gcc-16.1.0/0001-ssp_nonshared.diff    |  14 +
+ patches/gcc-16.1.0/0002-posix_memalign.diff   |  30 ++
+ patches/gcc-16.1.0/0003-j2.diff               | 346 ++++++++++++++++++
+ patches/gcc-16.1.0/0004-static-pie.diff       |  92 +++++
+ patches/gcc-16.1.0/0005-m68k-sqrt.diff        |  20 +
+ patches/gcc-16.1.0/0006-cow-libstdc++v3.diff  |   8 +
+ patches/gcc-16.1.0/0007-fdpic-unwind.diff     |  11 +
  .../0008-fdpic-crtstuff-pr114158.diff         |  38 ++
- .../gcc-15.2.0/0009-sh-fdpic-pr114641.diff    |  12 +
+ .../gcc-16.1.0/0009-sh-fdpic-pr114641.diff    |  12 +
  10 files changed, 572 insertions(+)
- create mode 100644 hashes/gcc-15.2.0.tar.xz.sha1
- create mode 100644 patches/gcc-15.2.0/0001-ssp_nonshared.diff
- create mode 100644 patches/gcc-15.2.0/0002-posix_memalign.diff
- create mode 100644 patches/gcc-15.2.0/0003-j2.diff
- create mode 100644 patches/gcc-15.2.0/0004-static-pie.diff
- create mode 100644 patches/gcc-15.2.0/0005-m68k-sqrt.diff
- create mode 100644 patches/gcc-15.2.0/0006-cow-libstdc++v3.diff
- create mode 100644 patches/gcc-15.2.0/0007-fdpic-unwind.diff
- create mode 100644 patches/gcc-15.2.0/0008-fdpic-crtstuff-pr114158.diff
- create mode 100644 patches/gcc-15.2.0/0009-sh-fdpic-pr114641.diff
+ create mode 100644 hashes/gcc-16.1.0.tar.xz.sha1
+ create mode 100644 patches/gcc-16.1.0/0001-ssp_nonshared.diff
+ create mode 100644 patches/gcc-16.1.0/0002-posix_memalign.diff
+ create mode 100644 patches/gcc-16.1.0/0003-j2.diff
+ create mode 100644 patches/gcc-16.1.0/0004-static-pie.diff
+ create mode 100644 patches/gcc-16.1.0/0005-m68k-sqrt.diff
+ create mode 100644 patches/gcc-16.1.0/0006-cow-libstdc++v3.diff
+ create mode 100644 patches/gcc-16.1.0/0007-fdpic-unwind.diff
+ create mode 100644 patches/gcc-16.1.0/0008-fdpic-crtstuff-pr114158.diff
+ create mode 100644 patches/gcc-16.1.0/0009-sh-fdpic-pr114641.diff
 
-diff --git a/hashes/gcc-15.2.0.tar.xz.sha1 b/hashes/gcc-15.2.0.tar.xz.sha1
+diff --git a/hashes/gcc-16.1.0.tar.xz.sha1 b/hashes/gcc-16.1.0.tar.xz.sha1
 new file mode 100644
-index 00000000..ee0c6155
+index 00000000..edfb07dc
 --- /dev/null
-+++ b/hashes/gcc-15.2.0.tar.xz.sha1
++++ b/hashes/gcc-16.1.0.tar.xz.sha1
 @@ -0,0 +1 @@
-+e9265c98ae18a6d952a636749d98c475ba2ca006  gcc-15.2.0.tar.xz
-diff --git a/patches/gcc-15.2.0/0001-ssp_nonshared.diff b/patches/gcc-15.2.0/0001-ssp_nonshared.diff
++1c60d17719913a13c17c283bbc3cfd2ffda5f0b0  gcc-16.1.0.tar.xz
+diff --git a/patches/gcc-16.1.0/0001-ssp_nonshared.diff b/patches/gcc-16.1.0/0001-ssp_nonshared.diff
 new file mode 100644
 index 00000000..b250f158
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0001-ssp_nonshared.diff
++++ b/patches/gcc-16.1.0/0001-ssp_nonshared.diff
 @@ -0,0 +1,14 @@
 +diff --git a/gcc/gcc.cc b/gcc/gcc.cc
 +index 7837553958b..3c81c5798d8 100644
@@ -59,11 +56,11 @@ index 00000000..b250f158
 + #else
 + #define LINK_SSP_SPEC "%{fstack-protector|fstack-protector-all" \
 + 		       "|fstack-protector-strong|fstack-protector-explicit" \
-diff --git a/patches/gcc-15.2.0/0002-posix_memalign.diff b/patches/gcc-15.2.0/0002-posix_memalign.diff
+diff --git a/patches/gcc-16.1.0/0002-posix_memalign.diff b/patches/gcc-16.1.0/0002-posix_memalign.diff
 new file mode 100644
 index 00000000..1d800963
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0002-posix_memalign.diff
++++ b/patches/gcc-16.1.0/0002-posix_memalign.diff
 @@ -0,0 +1,30 @@
 +diff --git a/gcc/config/i386/pmm_malloc.h b/gcc/config/i386/pmm_malloc.h
 +index 1b0bfe37852..d7b2b19bb3c 100644
@@ -95,11 +92,11 @@ index 00000000..1d800963
 +     return __ptr;
 +   else
 +     return NULL;
-diff --git a/patches/gcc-15.2.0/0003-j2.diff b/patches/gcc-15.2.0/0003-j2.diff
+diff --git a/patches/gcc-16.1.0/0003-j2.diff b/patches/gcc-16.1.0/0003-j2.diff
 new file mode 100644
 index 00000000..c3786456
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0003-j2.diff
++++ b/patches/gcc-16.1.0/0003-j2.diff
 @@ -0,0 +1,346 @@
 +diff --git a/gcc/config.gcc b/gcc/config.gcc
 +index 357b0bed067..528add999f2 100644
@@ -447,11 +444,11 @@ index 00000000..c3786456
 + 
 + $(out_object_file): gt-sh.h
 + gt-sh.h : s-gtype ; @true
-diff --git a/patches/gcc-15.2.0/0004-static-pie.diff b/patches/gcc-15.2.0/0004-static-pie.diff
+diff --git a/patches/gcc-16.1.0/0004-static-pie.diff b/patches/gcc-16.1.0/0004-static-pie.diff
 new file mode 100644
 index 00000000..ec3f06ad
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0004-static-pie.diff
++++ b/patches/gcc-16.1.0/0004-static-pie.diff
 @@ -0,0 +1,92 @@
 +diff --git a/gcc/common.opt b/gcc/common.opt
 +index a75b44ee47e..7c564818b49 100644
@@ -545,11 +542,11 @@ index 00000000..ec3f06ad
 + #endif
 + 
 + #ifndef LINK_BUILDID_SPEC
-diff --git a/patches/gcc-15.2.0/0005-m68k-sqrt.diff b/patches/gcc-15.2.0/0005-m68k-sqrt.diff
+diff --git a/patches/gcc-16.1.0/0005-m68k-sqrt.diff b/patches/gcc-16.1.0/0005-m68k-sqrt.diff
 new file mode 100644
 index 00000000..652efb15
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0005-m68k-sqrt.diff
++++ b/patches/gcc-16.1.0/0005-m68k-sqrt.diff
 @@ -0,0 +1,20 @@
 +diff --git a/gcc/config/m68k/m68k.md b/gcc/config/m68k/m68k.md
 +index 59a456cd496..dbfddea41bd 100644
@@ -571,11 +568,11 @@ index 00000000..652efb15
 + {
 +   if (FP_REG_P (operands[1]))
 +     return "f<FP:round>sqrt%.x %1,%0";
-diff --git a/patches/gcc-15.2.0/0006-cow-libstdc++v3.diff b/patches/gcc-15.2.0/0006-cow-libstdc++v3.diff
+diff --git a/patches/gcc-16.1.0/0006-cow-libstdc++v3.diff b/patches/gcc-16.1.0/0006-cow-libstdc++v3.diff
 new file mode 100644
 index 00000000..b49b22c2
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0006-cow-libstdc++v3.diff
++++ b/patches/gcc-16.1.0/0006-cow-libstdc++v3.diff
 @@ -0,0 +1,8 @@
 +--- a/libstdc++-v3/ChangeLog	2024-03-13 18:04:21.050801063 -0400
 ++++ b/libstdc++-v3/ChangeLog	2024-03-13 18:04:25.665836804 -0400
@@ -585,11 +582,11 @@ index 00000000..b49b22c2
 + are permitted in any medium without royalty provided the copyright
 +-notice and this notice are preserved.
 ++notice and this notice are preserved.
-diff --git a/patches/gcc-15.2.0/0007-fdpic-unwind.diff b/patches/gcc-15.2.0/0007-fdpic-unwind.diff
+diff --git a/patches/gcc-16.1.0/0007-fdpic-unwind.diff b/patches/gcc-16.1.0/0007-fdpic-unwind.diff
 new file mode 100644
 index 00000000..61d34795
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0007-fdpic-unwind.diff
++++ b/patches/gcc-16.1.0/0007-fdpic-unwind.diff
 @@ -0,0 +1,11 @@
 +--- a/libgcc/unwind-pe.h	2024-03-14 05:59:53.754073149 +0900
 ++++ b/libgcc/unwind-pe.h	2024-03-14 06:00:41.226074492 +0900
@@ -602,11 +599,11 @@ index 00000000..61d34795
 + 	  /* FDPIC relative addresses imply taking the GOT address
 + 	     into account.  */
 + 	  if ((encoding & DW_EH_PE_pcrel) && (encoding & DW_EH_PE_indirect))
-diff --git a/patches/gcc-15.2.0/0008-fdpic-crtstuff-pr114158.diff b/patches/gcc-15.2.0/0008-fdpic-crtstuff-pr114158.diff
+diff --git a/patches/gcc-16.1.0/0008-fdpic-crtstuff-pr114158.diff b/patches/gcc-16.1.0/0008-fdpic-crtstuff-pr114158.diff
 new file mode 100644
 index 00000000..3986eed9
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0008-fdpic-crtstuff-pr114158.diff
++++ b/patches/gcc-16.1.0/0008-fdpic-crtstuff-pr114158.diff
 @@ -0,0 +1,38 @@
 +--- a/libgcc/crtstuff.c	2023-05-29 17:46:32.000000000 +0900
 ++++ b/libgcc/crtstuff.c	2024-03-14 06:03:42.398079615 +0900
@@ -646,11 +643,11 @@ index 00000000..3986eed9
 + #endif /* !defined(__LIBGCC_INIT_SECTION_ASM_OP__) */
 + #endif /* USE_EH_FRAME_REGISTRY || USE_TM_CLONE_REGISTRY */
 + 
-diff --git a/patches/gcc-15.2.0/0009-sh-fdpic-pr114641.diff b/patches/gcc-15.2.0/0009-sh-fdpic-pr114641.diff
+diff --git a/patches/gcc-16.1.0/0009-sh-fdpic-pr114641.diff b/patches/gcc-16.1.0/0009-sh-fdpic-pr114641.diff
 new file mode 100644
 index 00000000..020422c3
 --- /dev/null
-+++ b/patches/gcc-15.2.0/0009-sh-fdpic-pr114641.diff
++++ b/patches/gcc-16.1.0/0009-sh-fdpic-pr114641.diff
 @@ -0,0 +1,12 @@
 +--- gcc-11.4.0/gcc/config/sh/sh.cc.orig	2024-04-04 05:52:42.125373614 +0900
 ++++ gcc-11.4.0/gcc/config/sh/sh.cc	2024-04-04 22:54:01.875106654 +0900

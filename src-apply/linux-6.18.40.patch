@@ -1,0 +1,13 @@
+Hash for latest Linux 6.18 (LTS) API headers. Added as a downstream patch by
+Daniel Massey for use in musl-cross-make-nightly.
+
+This should be tested before toolchains using it are deployed for production
+use.
+
+diff --git a/hashes/linux-6.18.40.tar.xz.sha1 b/hashes/linux-6.18.40.tar.xz.sha1
+new file mode 100644
+index 0000000..21b41fe
+--- /dev/null
++++ b/hashes/linux-6.18.40.tar.xz.sha1
+@@ -0,0 +1 @@
++706363a71f1bed9bb8a9c08b53694f2b867a2881  linux-6.18.40.tar.xz

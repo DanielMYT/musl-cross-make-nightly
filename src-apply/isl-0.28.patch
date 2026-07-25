@@ -1,0 +1,10 @@
+Hash for latest Linux 6.18 (LTS) API headers. Added as a downstream patch by
+Daniel Massey for use in musl-cross-make-nightly.
+
+diff --git a/hashes/isl-0.28.tar.xz.sha1 b/hashes/isl-0.28.tar.xz.sha1
+new file mode 100644
+index 0000000..7fe86bb
+--- /dev/null
++++ b/hashes/isl-0.28.tar.xz.sha1
+@@ -0,0 +1 @@
++bf3ae963297cd2f58e9981cbe801fe62f89b4fe2  isl-0.28.tar.xz
