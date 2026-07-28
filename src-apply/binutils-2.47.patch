@@ -1,30 +1,30 @@
-From e078d0f3edaecf17b421a761a7d9d5f57743d1d4 Mon Sep 17 00:00:00 2001
+From 4b48f4a1ee435c8043cffef87edc9c798a5e17b7 Mon Sep 17 00:00:00 2001
 From: userdocs <16525024+userdocs@users.noreply.github.com>
-Date: Tue, 16 Jun 2026 22:13:20 +0100
-Subject: [PATCH] add support for binutils-2.46.1
+Date: Sun, 26 Jul 2026 21:05:17 +0100
+Subject: [PATCH] add support for binutils-2.47
 
 added hash and patches tested and brought forward.
 ---
- hashes/binutils-2.46.1.tar.xz.sha1            |   1 +
- patches/binutils-2.46.1/0001-j2.diff          | 586 ++++++++++++++++++
- .../0002-sh-fdpic-pr31619.diff                |  33 +
+ hashes/binutils-2.47.tar.xz.sha1              |   1 +
+ patches/binutils-2.47/0001-j2.diff            | 586 ++++++++++++++++++
+ .../binutils-2.47/0002-sh-fdpic-pr31619.diff  |  33 +
  3 files changed, 620 insertions(+)
- create mode 100644 hashes/binutils-2.46.1.tar.xz.sha1
- create mode 100644 patches/binutils-2.46.1/0001-j2.diff
- create mode 100644 patches/binutils-2.46.1/0002-sh-fdpic-pr31619.diff
+ create mode 100644 hashes/binutils-2.47.tar.xz.sha1
+ create mode 100644 patches/binutils-2.47/0001-j2.diff
+ create mode 100644 patches/binutils-2.47/0002-sh-fdpic-pr31619.diff
 
-diff --git a/hashes/binutils-2.46.1.tar.xz.sha1 b/hashes/binutils-2.46.1.tar.xz.sha1
+diff --git a/hashes/binutils-2.47.tar.xz.sha1 b/hashes/binutils-2.47.tar.xz.sha1
 new file mode 100644
-index 00000000..3fe6c330
+index 00000000..988a63f3
 --- /dev/null
-+++ b/hashes/binutils-2.46.1.tar.xz.sha1
++++ b/hashes/binutils-2.47.tar.xz.sha1
 @@ -0,0 +1 @@
-+1ddbae1e5c429bf32111c9343651e8fa28a9c2de  binutils-2.46.1.tar.xz
-diff --git a/patches/binutils-2.46.1/0001-j2.diff b/patches/binutils-2.46.1/0001-j2.diff
++cf466e6872f43916b56d32c80fc62277e620f63a  binutils-2.47.tar.xz
+diff --git a/patches/binutils-2.47/0001-j2.diff b/patches/binutils-2.47/0001-j2.diff
 new file mode 100644
 index 00000000..95fde006
 --- /dev/null
-+++ b/patches/binutils-2.46.1/0001-j2.diff
++++ b/patches/binutils-2.47/0001-j2.diff
 @@ -0,0 +1,586 @@
 +diff -ur binutils-2.32.orig/bfd/archures.c binutils-2.32/bfd/archures.c
 +--- binutils-2.32.orig/bfd/archures.c	2019-01-19 11:01:32.000000000 -0500
@@ -612,11 +612,11 @@ index 00000000..95fde006
 + };
 + 
 +Only in binutils-2.32/opcodes: sh-opc.h.orig
-diff --git a/patches/binutils-2.46.1/0002-sh-fdpic-pr31619.diff b/patches/binutils-2.46.1/0002-sh-fdpic-pr31619.diff
+diff --git a/patches/binutils-2.47/0002-sh-fdpic-pr31619.diff b/patches/binutils-2.47/0002-sh-fdpic-pr31619.diff
 new file mode 100644
 index 00000000..9c57f397
 --- /dev/null
-+++ b/patches/binutils-2.46.1/0002-sh-fdpic-pr31619.diff
++++ b/patches/binutils-2.47/0002-sh-fdpic-pr31619.diff
 @@ -0,0 +1,33 @@
 +--- binutils-2.33.1/bfd/elf32-sh.c.orig	2024-04-04 23:11:28.739136261 +0900
 ++++ binutils-2.33.1/bfd/elf32-sh.c	2024-04-08 23:14:24.496915074 +0900
