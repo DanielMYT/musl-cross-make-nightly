@@ -14,7 +14,7 @@ git clone https://github.com/richfelker/musl-cross-make work/src
 if test -d src-apply; then
   while read -r patch; do
     ./try-apply.sh "$patch" work/src
-  done < <(find src-apply -mindepth 1 -maxdepth 1 -type f -name \*.patch)
+  done < <(find src-apply -mindepth 1 -maxdepth 1 -type f -name \*.patch | sort)
 fi
 
 # Set up build config.
