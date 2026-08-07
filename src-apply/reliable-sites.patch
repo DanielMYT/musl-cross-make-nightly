@@ -12,7 +12,7 @@ index d8b8d35..1cd57bb 100644
  LINUX_VER = headers-4.19.88-2
  
 -GNU_SITE = https://ftpmirror.gnu.org/gnu
-+GNU_SITE = https://mirror.lyrahosting.com/gnu
++GNU_SITE = https://ftp.nluug.nl/gnu
  GCC_SITE = $(GNU_SITE)/gcc
  BINUTILS_SITE = $(GNU_SITE)/binutils
  GMP_SITE = $(GNU_SITE)/gmp
